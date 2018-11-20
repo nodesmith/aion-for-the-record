@@ -27,7 +27,7 @@ Make note of the location of the exported keystore and the password that you cho
 
 Next, run the following script `npm run generateKey -- PATH_TO_KEYSTORE KEYSTORE_PASSWORD` with `PATH_TO_KEYSTORE` and `KEYSTORE_PASSWORD` replaced with the correct values.  For example: `npm run generateKey -- ./contract/demoKeyStore 123`. This script will generate a private key based on your keystore.  Keep this private key safe, and never store it client side.
 
-Finally, replace `PRIVATE_KEY` in `./contract/constants.js` with this value.
+Finally, replace `PRIVATE_KEY` in `./contract/constants.js` with this value.  Alternatively, you can set the PRIVATE_KEY environment variable.
 
 #### 2) Configure your Nodesmith endpoint
 

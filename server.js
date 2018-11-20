@@ -14,6 +14,17 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Helper function that reads the solidity contract, compiles it using web3, and returns the compiled contract object.
+const getCompiledContract = async () => {
+  const web3 = new Web3(new Web3.providers.HttpProvider(Constants.NODESMITH_ENDPOINT));
+  
+  const sol = fs.readFileSync('./contract/ForTheRecord.sol', {
+    encoding: 'utf8'
+  });
+
+  return await web3.eth.compileSolidity(sol);
+}
+
 // Server index.html when visiting the naked URL
 app.get('/', (request,response) => {
   response.sendFile(path.join(__dirname, 'build', 'index.html'));
@@ -25,14 +36,7 @@ app.get('/', (request,response) => {
  * the client to know about the raw contract and compile it themselves. 
  */
 app.get('/contractInfo', async (request,response) => {
-  const web3 = new Web3(new Web3.providers.HttpProvider(Constants.NODESMITH_ENDPOINT));
-  
-  // Read the file that contains the forTheRecord contract.
-  const sol = fs.readFileSync('./contract/ForTheRecord.sol', {
-    encoding: 'utf8'
-  });
-
-  const compiled = await web3.eth.compileSolidity(sol);
+  const compiled = await this.getCompiledContract();
   response.json({
     abi: compiled.ForTheRecord.info.abiDefinition,
     address: Constants.CONTRACT_ADDRESS,
@@ -57,16 +61,10 @@ app.post('/submitRecord', async (request,response) => {
   const web3 = new Web3(new Web3.providers.HttpProvider(Constants.NODESMITH_ENDPOINT));
   const signedAccount = web3.eth.accounts.privateKeyToAccount(Constants.PRIVATE_KEY);
 
-  // Read the file that contains the forTheRecord contract.
-  const sol = fs.readFileSync('./contract/ForTheRecord.sol', {
-    encoding: 'utf8'
-  });
-
-  // Compile the contract with web3.  This will use the Nodesmith endpoint to compile the
-  // contract string and return the ABI.  This allows us to create a contract object.
-  const compiled = await web3.eth.compileSolidity(sol);
+  // Get a compiled contract object
+  const compiled = await this.getCompiledContract();
   const contract = new web3.eth.Contract(compiled.ForTheRecord.info.abiDefinition, Constants.CONTRACT_ADDRESS);
-
+  
 
   // -----------------------------------------------------------------
   // Step 2: Prepare the transaction we will send with correct params.
