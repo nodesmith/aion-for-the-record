@@ -130,7 +130,7 @@ app.post('/submitRecord', async (request,response) => {
     })
     .then((receipt) => {
       // This will be fired once the receipt is mined.
-      // Since our dApp is fairly simple, we aren't doing anything yet with this info other than logging it.
+      // Since our app is fairly simple, we aren't doing anything yet with this info other than logging it.
       console.log(`Transaction sent successfully. Receipt: ${JSON.stringify(receipt)}`);
       return receipt;
     });

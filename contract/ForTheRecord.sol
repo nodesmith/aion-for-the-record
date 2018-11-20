@@ -1,7 +1,7 @@
 /*
   For the Record - store a string of data on Aion forever.
-  Open source sample DApp - the the tutorial here:
-  https://medium.com/nodesmith-blog/for-the-record-a-simple-open-source-aion-dapp-47e5bb81beac
+  Open source sample Aion web app - the the tutorial here:
+  https://medium.com/nodesmith-blog/for-the-record-a-web-app-starter-kit-built-on-aion-6dee39e1597b
 */
 
 pragma solidity ^0.4.10;

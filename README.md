@@ -1,9 +1,9 @@
 # aion-for-the-record
-A simple Aion DApp that permanently records a 140 character message into the Aion Network blockchain.
+A simple web app that permanently records a 140 character message into the Aion Network blockchain.
 View a running demo at [https://aion-for-the-record.herokuapp.com/](https://aion-for-the-record.herokuapp.com/).
 
 View the full tutorial here:
-[https://medium.com/nodesmith-blog/for-the-record-a-simple-open-source-aion-dapp-47e5bb81beac](https://medium.com/nodesmith-blog/for-the-record-a-simple-open-source-aion-dapp-47e5bb81beac)
+[https://medium.com/nodesmith-blog/for-the-record-a-web-app-starter-kit-built-on-aion-6dee39e1597b](https://medium.com/nodesmith-blog/for-the-record-a-web-app-starter-kit-built-on-aion-6dee39e1597b)
 
 This sample isn't a 'pure' dApp, because it utilizes a lightweight server component to handle writing transactions to the Aion network.  However, this is a very useful pattern when you wish to pay the transaction fees for your users.  This repository will soon have a sister repo that utilizes the [Aiwa Wallet](https://getaiwa.com) to provide a client only experience.
 
@@ -21,7 +21,7 @@ This sample isn't a 'pure' dApp, because it utilizes a lightweight server compon
 Run `npm install`.
 
 #### 1) Create your private key string from an Aion Keystore
-First, you will need to extract the keystore for an account to a known location. [Here are instructions](http://dev-docs.nodesmith.io/#/gettingStarted/privateKeys/export_keystore) for doing this from the Aion Desktop Wallet.
+First, you will need to extract the keystore for an account to a known location. [Here are instructions](http://docs.nodesmith.io/#/gettingStarted/privateKeys/export_keystore) for doing this from the Aion Desktop Wallet.
 
 Make note of the location of the exported keystore and the password that you chose to protect the keystore.
 

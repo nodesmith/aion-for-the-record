@@ -67,7 +67,7 @@ class RecordInput extends Component {
             <Typography variant="body1" align="center">
               Store a message (max of 140 characters) on the <a target="_blank" rel="noopener noreferrer" href="https://aion.network">Aion Network</a>.
               It will be immutably stored on the network forever.
-              This DApp is open sourced and part of a <a target="_blank" rel="noopener noreferrer" href="https://medium.com/nodesmith-blog/for-the-record-a-simple-open-source-aion-dapp-47e5bb81beac">developer tutorial</a>.
+              This app is open sourced and part of a <a target="_blank" rel="noopener noreferrer" href="https://medium.com/nodesmith-blog/for-the-record-a-web-app-starter-kit-built-on-aion-6dee39e1597b">developer tutorial</a>.
             </Typography>   
             <div>
              <TextField

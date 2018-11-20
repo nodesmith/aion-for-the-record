@@ -1,6 +1,6 @@
 {
-  "name": "For The Record - an Aion dApp",
-  "description": "A sample Aion dApp built by Nodesmith",
+  "name": "For The Record - an Aion web app",
+  "description": "A sample Aion web app built by Nodesmith",
   "repository": "https://github.com/nodesmith/aion-for-the-record",
   "image": "heroku/nodejs"
 }

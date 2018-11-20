@@ -23,7 +23,7 @@ const styles = theme => ({
 });
 
 /**
- * This is the main component of the For The Record dApp.  It lays out
+ * This is the main component of the For The Record app.  It lays out
  * the other components of the app, and is responsible for all interaction with the Aion Network.
  * 
  * Normally, you might use a state management library such as Redux to handle your app's data.
@@ -127,7 +127,7 @@ class App extends Component {
    * Within the componentDidMount, we read the event log of our smart contract.
    * This allows us to populate the app state with previous messages from the contract.
    * 
-   * Currently, reading events is pretty slow, so in this demo dApp, we only check the last 1000 blocks.
+   * Currently, reading events is pretty slow, so in this demo app, we only check the last 1000 blocks.
    */
   componentDidMount = () => {
     (async () => {
