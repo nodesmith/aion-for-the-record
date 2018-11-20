@@ -2,6 +2,12 @@ const fs = require('fs');
 const Web3 = require('aion-web3');
 const Constants = require('./constants');
 
+// Sanity check that the private key has been configured
+if (Constants.PRIVATE_KEY === '' || Constants.PRIVATE_KEY === 'FTR_PRIVATE_KEY') {
+  console.error('The private key has been incorrectly configured.  Please see the README for instructions.');
+  process.exit();
+}
+
 // This is the helper that actually does the work to compile the contract.
 // If the compileOnly flag is set to true, the contract won't be deployed.
 const compileAndDeploy = async (endpoint, fileName, compileOnly) => {

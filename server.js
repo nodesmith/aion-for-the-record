@@ -8,6 +8,12 @@ const fs = require('fs');
 
 const Constants = require('./contract/constants');
 
+// Sanity check that the contract address has been configured
+if (Constants.CONTRACT_ADDRESS === '' || Constants.CONTRACT_ADDRESS === 'FTR_CONTRACT_ADDRESS') {
+  console.error('The contract address is invalid.  Please compile the contract and place the compiled contract address in ./contract/constants');
+  process.exit();
+}
+
 // Basic express server configuration
 const app = express();
 app.use(express.static(path.join(__dirname, 'build')));
@@ -36,7 +42,7 @@ app.get('/', (request,response) => {
  * the client to know about the raw contract and compile it themselves. 
  */
 app.get('/contractInfo', async (request,response) => {
-  const compiled = await this.getCompiledContract();
+  const compiled = await getCompiledContract();
   response.json({
     abi: compiled.ForTheRecord.info.abiDefinition,
     address: Constants.CONTRACT_ADDRESS,
@@ -62,9 +68,9 @@ app.post('/submitRecord', async (request,response) => {
   const signedAccount = web3.eth.accounts.privateKeyToAccount(Constants.PRIVATE_KEY);
 
   // Get a compiled contract object
-  const compiled = await this.getCompiledContract();
+  const compiled = await getCompiledContract();
   const contract = new web3.eth.Contract(compiled.ForTheRecord.info.abiDefinition, Constants.CONTRACT_ADDRESS);
-  
+
 
   // -----------------------------------------------------------------
   // Step 2: Prepare the transaction we will send with correct params.

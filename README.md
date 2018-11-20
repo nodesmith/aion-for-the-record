@@ -27,11 +27,11 @@ Make note of the location of the exported keystore and the password that you cho
 
 Next, run the following script `npm run generateKey -- PATH_TO_KEYSTORE KEYSTORE_PASSWORD` with `PATH_TO_KEYSTORE` and `KEYSTORE_PASSWORD` replaced with the correct values.  For example: `npm run generateKey -- ./contract/demoKeyStore 123`. This script will generate a private key based on your keystore.  Keep this private key safe, and never store it client side.
 
-Finally, replace `PRIVATE_KEY` in `./contract/constants.js` with this value.  Alternatively, you can set the PRIVATE_KEY environment variable.
+Finally, replace `FTR_PRIVATE_KEY` in `./contract/constants.js` with this value. Alternatively, you can set the FTR_PRIVATE_KEY environment variable.
 
 #### 2) Configure your Nodesmith endpoint
 
-Replace `YOUR_API_KEY` in `./contract/constants.js` with your API Key.
+Replace `NODESMITH_API_KEY` in `./contract/constants.js` with your API Key. Alternatively, you can set the NODESMITH_API_KEY environment variable.
 
 The Nodesmith endpoint is currently configured to use the Mastery testnet.  When you are ready to deploy your contract
 on the mainnet, you can edit the `NODESMITH_ENDPOINT` in that file to point to the mainnet.
@@ -47,15 +47,14 @@ You can request some testnet Aion from the [Mastery Faucet](https://gitter.im/ai
 The main contract can be found in `./contract/ForTheRecord.sol`.
 
 * Run `npm run deploy` to compile & deploy the contract.
-* Replace `CONTRACT_ADDRESS` in `./contract/constants.js` with the contract address printed out in the deploy script.
+* Replace `FTR_CONTRACT_ADDRESS` in `./contract/constants.js` with the contract address printed out in the deploy script. Alternatively, you can set the FTR_CONTRACT_ADDRESS environment variable.
 
 **Note:** You can run `npm run compile` if you wish to just compile the contract but not deploy it.
 
 #### 4) Run the sample locally
 
 * Run `npm start` to start the client
-* Run `node server.js` to start the server
-* Open `localhost:8080` in your browser 
+* Open `localhost:8080` in your browser
 
 ## Technologies Used
 
@@ -66,4 +65,7 @@ The main contract can be found in `./contract/ForTheRecord.sol`.
 * [Nodesmith](https://nodesmith.io)
 
 ## Develop Mode
-`npm run dev`
+To speed up development, you can utilize a few tools:
+
+* Run `npm run dev` in one shell, and `node server.js` in another.  Then open `localhost:3000`.  This will enable hot loading, so you can merely make a client side change and the site will auto-reresh with changes.
+* There are configurations in the .vscode folder to run the server and deploy script through visual studio in order to use a debugger.
