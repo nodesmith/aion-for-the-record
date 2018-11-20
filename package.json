@@ -16,7 +16,7 @@
     "react-scripts": "2.1.1"
   },
   "scripts": {
-    "start": "npm install && npm run build && node server.js",
+    "start": "npm run build && node server.js",
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

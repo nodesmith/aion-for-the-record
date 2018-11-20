@@ -69,3 +69,8 @@ To speed up development, you can utilize a few tools:
 
 * Run `npm run dev` in one shell, and `node server.js` in another.  Then open `localhost:3000`.  This will enable hot loading, so you can merely make a client side change and the site will auto-reresh with changes.
 * There are configurations in the .vscode folder to run the server and deploy script through visual studio in order to use a debugger.
+
+## Deployment
+One of the reasons we chose to build this as an express app was to make deployment easy.
+
+The simplest way to deploy this sample is to use [Heroku](https://www.heroku.com/).  The repository already has the necessary config files to run on Heroku (the Procfile and app.json).  
