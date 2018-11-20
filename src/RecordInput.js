@@ -51,6 +51,7 @@ class RecordInput extends Component {
 
   submitMessage = () => {
     this.props.submitMessage(this.state.message);
+    this.setState({ message: '' });
   }
 
   render() {

@@ -6,7 +6,7 @@
     "@material-ui/core": "^3.4.0",
     "@material-ui/icons": "^3.0.1",
     "aion-keystore": "0.0.2",
-    "aion-web3": "git://github.com/aionnetwork/aion_web3.git#v1.0",
+    "aion-web3": "^1.1.0",
     "bn.js": "^4.11.8",
     "crypto-js": "^3.1.9-1",
     "express": "^4.16.4",
