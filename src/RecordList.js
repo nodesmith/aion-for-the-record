@@ -27,15 +27,15 @@ class RecordList extends Component {
   render() {
     const messageElements = Object.keys(this.props.messages).slice(0).reverse().map((txHash) => {
       const { text, isPending } = this.props.messages[txHash];
-      const status = (isPending) ? 'PENDING Tx: ' : 'Submitted Tx:';
+      const status = (isPending) ? 'PENDING' : 'CONFIRMED';
       return (
         <Grid item key={txHash} className={this.props.classes.messageContainer}>
           <Typography variant="h5" className={this.props.classes.message}>
             "{text}"
           </Typography>
           <Typography variant="caption" noWrap>
-            {status} <a target="_blank" rel="noopener noreferrer" href={`https://mastery.aion.network/#/transaction/${txHash}`}>
-              {txHash}
+            Transaction Status: <a target="_blank" rel="noopener noreferrer" href={`https://mastery.aion.network/#/transaction/${txHash}`}>
+              {status}
             </a>
           </Typography>
           
