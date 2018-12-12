@@ -145,8 +145,11 @@ class App extends Component {
   }
 
   loadEvents = async () => {
+    this.setState({ loadingMessages: true });
     const contractInfo = this.state.contractInfo;
-    const web3 = new Web3(new Web3.providers.HttpProvider(contractInfo.endpoint));
+    const endpoint = this.state.eventCacheEnabled ? contractInfo.eventCacheEndpoint : contractInfo.endpoint;
+    console.log(`Using endpoint ${endpoint}`);
+    const web3 = new Web3(new Web3.providers.HttpProvider(endpoint));
     const contract = new web3.eth.Contract(contractInfo.abi, contractInfo.address);
 
     const blockNum = await web3.eth.getBlockNumber();
@@ -182,15 +185,14 @@ class App extends Component {
     this.setState({settingsDialogOpen: false});
 
     if (newSettings) {
-      this.setState(newSettings);
-      this.loadEvents();
+      this.setState(newSettings, this.loadEvents);
       this.persistSettings(newSettings);
     }
   }
 
   loadSettings = () => {
     try {
-      const currentSettings = window.localStorage.getItem('settings');
+      const currentSettings = window.localStorage.getItem('eventCacheSettings');
       if (currentSettings) {
         return JSON.parse(currentSettings);
       }
@@ -204,7 +206,7 @@ class App extends Component {
 
   persistSettings = (newSettings) => {
     const settingsString = JSON.stringify(newSettings);
-    window.localStorage.setItem('settings', settingsString);
+    window.localStorage.setItem('eventCacheSettings', settingsString);
   }
 
   render() {

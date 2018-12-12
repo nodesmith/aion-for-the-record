@@ -67,7 +67,7 @@ class SettingsDialog extends Component {
         <DialogContent>
           <TextField
             margin="dense"
-            label="Number of Blocks to Load"
+            label="Number of Blocks to Search"
             type="number"
             fullWidth
             variant="outlined"
@@ -83,7 +83,7 @@ class SettingsDialog extends Component {
                 color="primary"
               />
             }
-            label="Event Cache Enabled"
+            label="Enable Event Cache"
           />
         </DialogContent>
         <DialogActions>

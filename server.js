@@ -47,6 +47,7 @@ app.get('/contractInfo', async (request,response) => {
     abi: compiled.ForTheRecord.info.abiDefinition,
     address: Constants.CONTRACT_ADDRESS,
     endpoint: Constants.NODESMITH_ENDPOINT,
+    eventCacheEndpoint: Constants.EVENT_CACHE_NODESMITH_ENDPOINT
   });
 });
 
