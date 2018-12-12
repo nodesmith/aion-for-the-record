@@ -44,8 +44,9 @@ class App extends Component {
       submittingMessage: false,
       settingsDialogOpen: false,
       loadTime: 0,
+      showResetSettings: false,
       blockCount: savedSettings.blockCount,
-      eventCacheEnabled: savedSettings.eventCacheEnabled,
+      eventCacheEnabled: savedSettings.eventCacheEnabled
     };
   }
 
@@ -156,9 +157,20 @@ class App extends Component {
     const startBlock = blockNum - this.state.blockCount;
 
     const startTime = new Date().getTime();
+    let currentLoadTime = 0;
+    const interval = window.setInterval(() => {
+      const endTime = new Date().getTime();
+      currentLoadTime = (endTime - startTime) / 1000;
+      if (currentLoadTime > 5 && !this.state.showResetSettings) {
+        this.setState({ showResetSettings: true})
+      }
+    }, 25);
+
     contract.getPastEvents('AllEvents', { fromBlock: startBlock, toBlock: 'latest' }, (error, eventLogs) => {
       const messages = {};
-      const endTime = new Date().getTime();
+      window.clearInterval(interval);
+      const loadTime = (new Date().getTime() - startTime) / 1000;
+      this.setState({ loadTime });
       if (!error) {
         eventLogs.forEach(event => {
           messages[event.transactionHash] = {
@@ -172,8 +184,7 @@ class App extends Component {
         console.log(`An unexpected error occurred when reading event logs: ${error}`)
       }
 
-      const loadTime = (endTime - startTime) / 1000;
-      this.setState({ loadingMessages: false, loadTime });
+      this.setState({ loadingMessages: false, showResetSettings: false });
     });
   }
 
@@ -209,6 +220,15 @@ class App extends Component {
     window.localStorage.setItem('eventCacheSettings', settingsString);
   }
 
+  resetSettings = () => {
+    this.persistSettings({
+      blockCount: 1000,
+      eventCacheEnabled: false
+    });
+
+    window.location.reload();
+  }
+
   render() {
     return (
       <div className={this.props.classes.root}>
@@ -216,7 +236,8 @@ class App extends Component {
         <RecordList
           eventCacheEnabled={this.state.eventCacheEnabled} showSettingsDialog={this.showSettingsDialog}
           blockCount={this.state.blockCount} loadTime={this.state.loadTime} messages={this.state.messages}
-          transactionHashes={this.state.transactionHashes} loadingMessages={this.state.loadingMessages} />
+          transactionHashes={this.state.transactionHashes} loadingMessages={this.state.loadingMessages}
+          showResetSettings={this.state.showResetSettings} resetSettings={this.resetSettings}/>
         <div className={this.props.classes.flex}/>
         <div className={this.props.classes.footer}>
           <Typography>Made with <span role="img" aria-label="heart">❤️</span> by <a target="_blank" rel="noopener noreferrer" href="https://nodesmith.io/aion.html">Nodesmith</a></Typography>

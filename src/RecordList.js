@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, CircularProgress, Grid, Typography, IconButton } from '@material-ui/core';
+import { withStyles, CircularProgress, Grid, Typography, IconButton, Button } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 const styles = theme => ({
@@ -19,6 +19,9 @@ const styles = theme => ({
   },
   settingsButton: {
     marginLeft: theme.spacing.unit * 1
+  },
+  resetSettingsButton: {
+    marginTop: theme.spacing.unit * 2
   }
 });
 
@@ -60,7 +63,17 @@ class RecordList extends Component {
       )
     }
 
-    const spinner = (<CircularProgress />)
+    const spinner = (
+      <Grid container direction="column" alignItems="center">
+        <Grid item xs={12}>
+          <CircularProgress />
+        </Grid>
+        <Grid item xs={12} className={this.props.classes.resetSettingsButton}>
+          {this.props.showResetSettings ? 
+            (<Button onClick={this.props.resetSettings} color="secondary" variant="outlined">
+            Abort Loading and Reset Settings</Button>) : null}
+        </Grid>
+      </Grid>);
 
     const eventCacheStatus = this.props.loadingMessages ? '' :
       `Event Cache ${this.props.eventCacheEnabled ? 'Enabled' : 'Disabled'}. Loaded in ${this.props.loadTime} seconds`;
@@ -95,6 +108,8 @@ RecordList.propTypes = {
   blockCount: PropTypes.number.isRequired,
   eventCacheEnabled: PropTypes.bool.isRequired,
   showSettingsDialog: PropTypes.func.isRequired,
+  showResetSettings: PropTypes.bool.isRequired,
+  resetSettings: PropTypes.func.isRequired,
   loadTime: PropTypes.number.isRequired
 };
 
