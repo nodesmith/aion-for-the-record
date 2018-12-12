@@ -6,6 +6,7 @@ import Web3 from 'aion-web3';
 import './App.css';
 import RecordInput from './RecordInput';
 import RecordList from './RecordList';
+import SettingsDialog from './SettingsDialog';
 
 const styles = theme => ({
   root: {
@@ -36,10 +37,15 @@ const styles = theme => ({
 class App extends Component {
   constructor(props) {
     super(props);
+    const savedSettings = this.loadSettings();
     this.state = { 
       messages: {},
       loadingMessages: false,
       submittingMessage: false,
+      settingsDialogOpen: false,
+      loadTime: 0,
+      blockCount: savedSettings.blockCount,
+      eventCacheEnabled: savedSettings.eventCacheEnabled,
     };
   }
 
@@ -86,7 +92,7 @@ class App extends Component {
    * Interval will ping every second until the transaction has been mined.
    */
   checkTransactionStatus = async (interval, hash, message) => {
-    const contractInfo = await this.getContractInfo();
+    const contractInfo = this.state.contractInfo;
     const web3 = new Web3(new Web3.providers.HttpProvider(contractInfo.endpoint));
     
     web3.eth.getTransactionReceipt(hash, (error, receipt) => {
@@ -134,41 +140,90 @@ class App extends Component {
       this.setState({ loadingMessages: true });
 
       const contractInfo = await this.getContractInfo();
-      const web3 = new Web3(new Web3.providers.HttpProvider(contractInfo.endpoint));
-      const contract = new web3.eth.Contract(contractInfo.abi, contractInfo.address);
-
-      const blockNum = await web3.eth.getBlockNumber();
-      const thousandBlocksAgo = (blockNum - 1000).toString();
-
-      contract.getPastEvents('AllEvents', { fromBlock: thousandBlocksAgo, toBlock: 'latest' }, (error, eventLogs) => {
-        const messages = {};
-        if (!error) {
-          eventLogs.forEach(event => {
-            messages[event.transactionHash] = {
-              text: event.returnValues.message,
-              isPending: false,
-            }
-          });
-
-          this.setState({ messages });
-        } else {
-          console.log(`An unexpected error occurred when reading event logs: ${error}`)
-        }
-
-        this.setState({ loadingMessages: false });
-      });
+      this.setState( { contractInfo }, this.loadEvents);
     })();
+  }
+
+  loadEvents = async () => {
+    const contractInfo = this.state.contractInfo;
+    const web3 = new Web3(new Web3.providers.HttpProvider(contractInfo.endpoint));
+    const contract = new web3.eth.Contract(contractInfo.abi, contractInfo.address);
+
+    const blockNum = await web3.eth.getBlockNumber();
+    const startBlock = blockNum - this.state.blockCount;
+
+    const startTime = new Date().getTime();
+    contract.getPastEvents('AllEvents', { fromBlock: startBlock, toBlock: 'latest' }, (error, eventLogs) => {
+      const messages = {};
+      const endTime = new Date().getTime();
+      if (!error) {
+        eventLogs.forEach(event => {
+          messages[event.transactionHash] = {
+            text: event.returnValues.message,
+            isPending: false,
+          }
+        });
+
+        this.setState({ messages });
+      } else {
+        console.log(`An unexpected error occurred when reading event logs: ${error}`)
+      }
+
+      const loadTime = (endTime - startTime) / 1000;
+      this.setState({ loadingMessages: false, loadTime });
+    });
+  }
+
+  showSettingsDialog = () => {
+    this.setState({settingsDialogOpen: true});
+  }
+
+  closeSettingsDialog = (newSettings) => {
+    this.setState({settingsDialogOpen: false});
+
+    if (newSettings) {
+      this.setState(newSettings);
+      this.loadEvents();
+      this.persistSettings(newSettings);
+    }
+  }
+
+  loadSettings = () => {
+    try {
+      const currentSettings = window.localStorage.getItem('settings');
+      if (currentSettings) {
+        return JSON.parse(currentSettings);
+      }
+    } catch(e) {}
+
+    return {
+      blockCount: 1000,
+      eventCacheEnabled: false
+    };
+  }
+
+  persistSettings = (newSettings) => {
+    const settingsString = JSON.stringify(newSettings);
+    window.localStorage.setItem('settings', settingsString);
   }
 
   render() {
     return (
       <div className={this.props.classes.root}>
         <RecordInput submitMessage={this.submitMessage} submittingMessage={this.state.submittingMessage} />
-        <RecordList messages={this.state.messages} transactionHashes={this.state.transactionHashes} loadingMessages={this.state.loadingMessages} />
+        <RecordList
+          eventCacheEnabled={this.state.eventCacheEnabled} showSettingsDialog={this.showSettingsDialog}
+          blockCount={this.state.blockCount} loadTime={this.state.loadTime} messages={this.state.messages}
+          transactionHashes={this.state.transactionHashes} loadingMessages={this.state.loadingMessages} />
         <div className={this.props.classes.flex}/>
         <div className={this.props.classes.footer}>
           <Typography>Made with <span role="img" aria-label="heart">❤️</span> by <a target="_blank" rel="noopener noreferrer" href="https://nodesmith.io/aion.html">Nodesmith</a></Typography>
         </div>
+        <SettingsDialog 
+          eventCacheEnabled={this.state.eventCacheEnabled} 
+          blockCount={this.state.blockCount}
+          closeSettingsDialog={this.closeSettingsDialog}
+          isOpen={this.state.settingsDialogOpen} />
       </div>
     );
   }

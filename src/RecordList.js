@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, CircularProgress, Grid, Typography } from '@material-ui/core';
+import { withStyles, CircularProgress, Grid, Typography, IconButton } from '@material-ui/core';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const styles = theme => ({
   header: {
@@ -16,6 +17,9 @@ const styles = theme => ({
     maxWidth: 600,
     textAlign: 'center',
   },
+  settingsButton: {
+    marginLeft: theme.spacing.unit * 1
+  }
 });
 
 /**
@@ -58,11 +62,25 @@ class RecordList extends Component {
 
     const spinner = (<CircularProgress />)
 
+    const eventCacheStatus = this.props.loadingMessages ? '' :
+      `Event Cache ${this.props.eventCacheEnabled ? 'Enabled' : 'Disabled'}. Loaded in ${this.props.loadTime} seconds`;
+
     return (
       <Grid container alignItems="center" direction="column">
         <Grid item xs={6} className={this.props.classes.header}>
-          <Typography variant="h5">Messages in last 1000 blocks:</Typography>
+          <Typography variant="h3">Messages in last {this.props.blockCount} blocks
+            <IconButton disabled={this.props.loadingMessages}
+              className={this.props.classes.settingsButton}
+              aria-label="Settings"
+              onClick={this.props.showSettingsDialog}>
+              <SettingsIcon />
+            </IconButton>
+          </Typography>
+          <Typography align="center" variant="caption">
+            {eventCacheStatus}
+          </Typography>
         </Grid>
+        
         { (this.props.loadingMessages) ? spinner : messageElements }
       </Grid>
     );
@@ -74,6 +92,10 @@ RecordList.propTypes = {
   // messages[txHash] = { e, isPending }
   messages: PropTypes.object.isRequired,
   loadingMessages: PropTypes.bool.isRequired,
+  blockCount: PropTypes.number.isRequired,
+  eventCacheEnabled: PropTypes.bool.isRequired,
+  showSettingsDialog: PropTypes.func.isRequired,
+  loadTime: PropTypes.number.isRequired
 };
 
 export default withStyles(styles)(RecordList);
