@@ -154,7 +154,7 @@ class App extends Component {
     const contract = new web3.eth.Contract(contractInfo.abi, contractInfo.address);
 
     const blockNum = await web3.eth.getBlockNumber();
-    const startBlock = blockNum - this.state.blockCount;
+    const startBlock = Math.max(0, blockNum - this.state.blockCount);
 
     const startTime = new Date().getTime();
     let currentLoadTime = 0;
