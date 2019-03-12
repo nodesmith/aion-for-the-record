@@ -20,6 +20,7 @@ const styles = theme => ({
   footer: {
     textAlign: 'center',
     padding: 8,
+    backgroundColor: theme.palette.grey['100']
   },
 });
 

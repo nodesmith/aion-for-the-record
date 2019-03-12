@@ -20,10 +20,10 @@ const PRIVATE_KEY = process.env.FTR_PRIVATE_KEY || 'FTR_PRIVATE_KEY';
  * Get your own API Key & endpoint here: https://dashboard.nodesmith.io
  */
 const apiKey = process.env.NODESMITH_API_KEY || 'NODESMITH_API_KEY';
-const NODESMITH_ENDPOINT = `https://dev-api.nodesmith.io/v1/aion/testnet/jsonrpc?apiKey=${apiKey}`;
+const NODESMITH_ENDPOINT = `https://aion.api.nodesmith.io/v1/mastery/jsonrpc?apiKey=${apiKey}`;
 
 const eventCacheApiKey = process.env.EVENT_CACHE_NODESMITH_API_KEY;
-const EVENT_CACHE_NODESMITH_ENDPOINT = `https://dev-api.nodesmith.io/v1/aion/testnet/jsonrpc?apiKey=${eventCacheApiKey}`;
+const EVENT_CACHE_NODESMITH_ENDPOINT = `https://aion.api.nodesmith.io/v1/mastery/jsonrpc?apiKey=${eventCacheApiKey}`;
 
 module.exports = {
   CONTRACT_ADDRESS,

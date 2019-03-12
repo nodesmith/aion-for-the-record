@@ -81,7 +81,7 @@ class RecordList extends Component {
     return (
       <Grid container alignItems="center" direction="column">
         <Grid item xs={6} className={this.props.classes.header}>
-          <Typography variant="h3">Messages in last {this.props.blockCount} blocks
+          <Typography variant="h5">{messageElements.length.toString()} Messages in last {this.props.blockCount.toLocaleString()} blocks
             <IconButton disabled={this.props.loadingMessages}
               className={this.props.classes.settingsButton}
               aria-label="Settings"
